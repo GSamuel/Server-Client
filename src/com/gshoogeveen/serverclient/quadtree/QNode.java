@@ -41,7 +41,6 @@ public class QNode
 	{
 		if (boundBox.contains(entity.getX(), entity.getY()))
 		{
-			System.out.println(level + " " + maxLevel);
 			if (isLeaf)
 			{
 				if (bucket == null)
@@ -69,6 +68,27 @@ public class QNode
 		}
 
 	}
+	
+	public void query2D(Interval2DD rect, ArrayList<Entity> list) {
+		
+		if(!boundBox.intersects(rect))
+			return;
+        
+        if(isLeaf)
+        {
+        	if(bucket != null)
+        for(Entity e:bucket)
+        if (rect.contains(e.getX(),e.getY()))
+        	list.add(e);
+        }
+        else
+        {
+        	NW.query2D(rect, list);
+        	NE.query2D(rect, list);
+        	SW.query2D(rect, list);
+        	SE.query2D(rect, list);
+        }
+    }
 
 	public int size()
 	{
@@ -161,11 +181,9 @@ public class QNode
 		this.bucket.clear();
 		this.bucket = null;
 		this.parent = null;
-		this.boundBox = null;
 		this.NW = null;
 		this.NE = null;
 		this.SW = null;
 		this.SE = null;
-
 	}
 }

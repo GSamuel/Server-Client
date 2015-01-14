@@ -1,5 +1,7 @@
 package com.gshoogeveen.serverclient;
 
+import java.util.ArrayList;
+
 import com.gshoogeveen.serverclient.models.Entity;
 import com.gshoogeveen.serverclient.models.World;
 import com.gshoogeveen.serverclient.quadtree.Interval2DD;
@@ -12,15 +14,26 @@ public class ServerMain
 	{
 		World w = new World();
 		//CustomFrame frame = new CustomFrame();
-
-		Entity e = new Entity(0.5,1.5);
-		Entity e2 = new Entity(1.5,0.5);
-		Entity e3 = new Entity(1.5,1.5);
 		
-		QNode qtree = new QNode(null, new Interval2DD(new IntervalD(0.0,2.0), new IntervalD(0.0,2.0)),3, 10);
-		qtree.insert(e);	
-		qtree.insert(e2);
-		qtree.insert(e3);
+		Interval2DD rect = new Interval2DD(new IntervalD(0.0,0.1), new IntervalD(0.0,0.1));
+
+		
+		QNode qtree = new QNode(null, new Interval2DD(new IntervalD(0.0,5.0), new IntervalD(0.0,5.0)),4, 10);
+		for(int i =0; i < 1000000; i++)
+		{
+			qtree.insert(new Entity(Math.random()*5, Math.random()*5));
+		}
+
+		
+		ArrayList<Entity> list = new ArrayList<Entity>();
+
+		long start = System.currentTimeMillis();
+		qtree.query2D(rect, list);
+		long diff = System.currentTimeMillis()-start;
+		System.out.println(diff +" "+ list.size() );
+		
+		for(Entity en:list)
+			System.out.println(en.getX()+" "+en.getY());
 
 		w.addEntity(new Entity(0, 0));
 		//new Server().start();
