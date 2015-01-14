@@ -1,4 +1,4 @@
-package com.gshoogeveen.serverclient.quadtree;
+package com.gshoogeveen.serverclient.reference;
 
 public class Interval2D<Key extends Comparable<Key>> { 
     public final Interval<Key> intervalX;   // x-interval

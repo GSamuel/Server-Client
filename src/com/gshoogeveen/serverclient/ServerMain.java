@@ -2,29 +2,28 @@ package com.gshoogeveen.serverclient;
 
 import com.gshoogeveen.serverclient.models.Entity;
 import com.gshoogeveen.serverclient.models.World;
-import com.gshoogeveen.serverclient.quadtree.Interval;
-import com.gshoogeveen.serverclient.quadtree.Interval2D;
-import com.gshoogeveen.serverclient.quadtree.QuadTree;
-import com.gshoogeveen.serverclient.server.Server;
-import com.gshoogeveen.serverclient.views.CustomFrame;
+import com.gshoogeveen.serverclient.quadtree.Interval2DD;
+import com.gshoogeveen.serverclient.quadtree.IntervalD;
+import com.gshoogeveen.serverclient.quadtree.QNode;
 
 public class ServerMain
 {
 	public static void main(String[] args)
 	{
 		World w = new World();
-		CustomFrame frame = new CustomFrame();
+		//CustomFrame frame = new CustomFrame();
+
+		Entity e = new Entity(0.5,1.5);
+		Entity e2 = new Entity(1.5,0.5);
+		Entity e3 = new Entity(1.5,1.5);
 		
-		Entity e = new Entity(1.5,2.5);
-		
-		QuadTree<Double, Entity> qTree = new QuadTree<Double, Entity>();
-		qTree.insert(e.getX(),e.getY(),e);
-		qTree.insert(0.01,5.0, new Entity(1.5,2.5));
-		
-		qTree.query2D(new Interval2D<Double>(new Interval<Double>(0.0,5.0), new Interval<Double>(0.0,5.0)));
-		
+		QNode qtree = new QNode(null, new Interval2DD(new IntervalD(0.0,2.0), new IntervalD(0.0,2.0)),3, 10);
+		qtree.insert(e);	
+		qtree.insert(e2);
+		qtree.insert(e3);
+
 		w.addEntity(new Entity(0, 0));
-		new Server().start();
+		//new Server().start();
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.gshoogeveen.serverclient.quadtree;
+package com.gshoogeveen.serverclient.reference;
 public class Interval<Key extends Comparable<Key>> { 
     public final Key low;      // left endpoint
     public final Key high;     // right endpoint

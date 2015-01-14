@@ -1,4 +1,6 @@
-package com.gshoogeveen.serverclient.quadtree;
+package com.gshoogeveen.serverclient.reference;
+
+import java.util.ArrayList;
 
 
 public class QuadTree<Key extends Comparable<Key>, Value>  {
@@ -40,22 +42,25 @@ public class QuadTree<Key extends Comparable<Key>, Value>  {
     *  Range search.
     ***********************************************************************/
 
-    public void query2D(Interval2D<Key> rect) {
-        query2D(root, rect);
+    public void query2D(Interval2D<Key> rect, ArrayList<Value> list) {
+        query2D(root, rect, list);
     }
 
-    private void query2D(Node h, Interval2D<Key> rect) {
+    private void query2D(Node h, Interval2D<Key> rect, ArrayList<Value> list) {
         if (h == null) return;
         Key xmin = rect.intervalX.low;
         Key ymin = rect.intervalY.low;
         Key xmax = rect.intervalX.high;
         Key ymax = rect.intervalY.high;
         if (rect.contains(h.x, h.y))
-            System.out.println("    (" + h.x + ", " + h.y + ") " + h.value);
-        if ( less(xmin, h.x) &&  less(ymin, h.y)) query2D(h.SW, rect);
-        if ( less(xmin, h.x) && !less(ymax, h.y)) query2D(h.NW, rect);
-        if (!less(xmax, h.x) &&  less(ymin, h.y)) query2D(h.SE, rect);
-        if (!less(xmax, h.x) && !less(ymax, h.y)) query2D(h.NE, rect);
+        {
+        	list.add(h.value);
+            //System.out.println("    (" + h.x + ", " + h.y + ") " + h.value);
+        }
+        if ( less(xmin, h.x) &&  less(ymin, h.y)) query2D(h.SW, rect,list);
+        if ( less(xmin, h.x) && !less(ymax, h.y)) query2D(h.NW, rect,list);
+        if (!less(xmax, h.x) &&  less(ymin, h.y)) query2D(h.SE, rect,list);
+        if (!less(xmax, h.x) && !less(ymax, h.y)) query2D(h.NE, rect,list);
     }
 
 
@@ -100,7 +105,15 @@ public class QuadTree<Key extends Comparable<Key>, Value>  {
             Interval<Integer> intY = new Interval<Integer>(ymin, ymax);
             Interval2D<Integer> rect = new Interval2D<Integer>(intX, intY);
             System.out.println(rect + " : ");
-            st.query2D(rect);
+            
+            ArrayList<String> list = new ArrayList<String>();
+            
+            st.query2D(rect, list);
+            
+           for(String s: list)
+           {
+        	   System.out.println(s);
+           }
         }
     }
 }
