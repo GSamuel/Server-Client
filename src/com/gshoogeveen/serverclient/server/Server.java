@@ -3,10 +3,17 @@ package com.gshoogeveen.serverclient.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Server implements Runnable
 {
 	private boolean started = false;
+	private ConcurrentHashMap<Socket, Integer> connMap;
+	
+	public Server(ConcurrentHashMap<Socket, Integer> connMap)
+	{
+		this.connMap = connMap;
+	}
 
 	public void start()
 	{
@@ -40,8 +47,8 @@ public class Server implements Runnable
 				System.out.println("client connected");
 
 				System.out.println(serverSocket.getRemoteSocketAddress());
-				System.out.println("server closed");
-				serverSocket.close();
+				System.out.println("server added to list");
+				connMap.put(serverSocket, (int)(Math.random()*100));
 			} catch (IOException e)
 			{
 				e.printStackTrace();

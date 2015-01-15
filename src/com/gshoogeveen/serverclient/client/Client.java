@@ -22,7 +22,8 @@ public class Client implements Runnable
 		try
 		{
 			System.out.println("connection to server");
-			clientSocket = new Socket("192.168.2.38", 1205);
+			//clientSocket = new Socket("192.168.2.38", 1205);
+			clientSocket = new Socket("192.168.1.44", 1205);
 			System.out.println("connected to server");
 			Thread.sleep(2000);
 			System.out.println("close connection");
