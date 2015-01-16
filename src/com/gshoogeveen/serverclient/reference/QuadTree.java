@@ -69,7 +69,7 @@ public class QuadTree<Key extends Comparable<Key>, Value>  {
     *************************************************************************/
 
     private boolean less(Key k1, Key k2) { return k1.compareTo(k2) <  0; }
-    private boolean eq  (Key k1, Key k2) { return k1.compareTo(k2) == 0; }
+    //private boolean eq  (Key k1, Key k2) { return k1.compareTo(k2) == 0; }
 
 
    /*************************************************************************
