@@ -8,12 +8,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Server implements Runnable
 {
 	private boolean started = false;
-	private ConcurrentHashMap<Socket, Integer> connMap;
-	
+	//private ConcurrentHashMap<Socket, Integer> connMap;
+	/*
 	public Server(ConcurrentHashMap<Socket, Integer> connMap)
 	{
 		this.connMap = connMap;
-	}
+	}*/
 
 	public void start()
 	{
@@ -38,24 +38,27 @@ public class Server implements Runnable
 
 		while (true)
 		{
-			Socket serverSocket = null;
+			Socket clientSocket = null;
 			System.out.println("wait for client");
 			try
 			{
-				serverSocket = server.accept();
+				clientSocket = server.accept();
 
 				System.out.println("client connected");
 
-				System.out.println(serverSocket.getRemoteSocketAddress());
+				System.out.println(clientSocket.getRemoteSocketAddress());
 				System.out.println("server added to list");
-				connMap.put(serverSocket, (int)(Math.random()*100));
+				//connMap.put(serverSocket, (int)(Math.random()*100));
+				
+				new Thread(new connectionHandler(clientSocket)).start();
+				
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 
 				try
 				{
-					serverSocket.close();
+					clientSocket.close();
 				} catch (IOException e1)
 				{
 					e1.printStackTrace();
