@@ -1,25 +1,38 @@
 package com.gshoogeveen.serverclient;
 
+import com.gshoogeveen.serverclient.server.ConnectionManager;
 import com.gshoogeveen.serverclient.server.Server;
+import com.gshoogeveen.serverclient.views.ConnectionManagerView;
 import com.gshoogeveen.serverclient.views.CustomFrame;
+import com.gshoogeveen.serverclient.views.IntegerSender;
 
-public class ServerMain
+public class ServerMain implements Runnable
 {
+	private ConnectionManager manager = new ConnectionManager();
+	CustomFrame frame = new CustomFrame();
+
+	public ServerMain()
+	{
+		new Server(manager, 1205).start();
+		
+		frame.add(new IntegerSender(manager));
+		frame.add(new ConnectionManagerView(manager));
+		frame.revalidate();
+		frame.setTitle("Server");
+	}
+
 	public static void main(String[] args)
 	{
-		CustomFrame frame = new CustomFrame();
+		new ServerMain();
+	}
 
-		new Server().start();
-		
-		while(true)
+	@Override
+	public void run()
+	{
+		while (true)
 		{
-			try
-			{
-				Thread.sleep(750);
-			} catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
+			manager.read();
+			frame.repaint();
 		}
 	}
 

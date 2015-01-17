@@ -3,18 +3,19 @@ package com.gshoogeveen.serverclient.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Server implements Runnable
 {
+	private ConnectionManager connectionManager;
 	private boolean started = false;
-	//private ConcurrentHashMap<Socket, Integer> connMap;
-	/*
-	public Server(ConcurrentHashMap<Socket, Integer> connMap)
+	private int port;
+	
+	public Server(ConnectionManager connectionManager, int port)
 	{
-		this.connMap = connMap;
-	}*/
-
+		this.connectionManager = connectionManager;
+		this.port = port;
+	}
+	
 	public void start()
 	{
 		if (!started)
@@ -29,28 +30,26 @@ public class Server implements Runnable
 		ServerSocket server = null;
 		try
 		{
-			server = new ServerSocket(1205);
+			server = new ServerSocket(port);
 			System.out.println("server made");
 		} catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 
+
+		Socket clientSocket = null;
+		
 		while (true)
 		{
-			Socket clientSocket = null;
-			System.out.println("wait for client");
 			try
 			{
+				System.out.println("wait for client");
 				clientSocket = server.accept();
-
 				System.out.println("client connected");
-
 				System.out.println(clientSocket.getRemoteSocketAddress());
-				System.out.println("server added to list");
-				//connMap.put(serverSocket, (int)(Math.random()*100));
 				
-				new Thread(new connectionHandler(clientSocket)).start();
+				connectionManager.add(new ConnectionHandler(clientSocket));
 				
 			} catch (IOException e)
 			{

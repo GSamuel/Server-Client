@@ -1,22 +1,36 @@
 package com.gshoogeveen.serverclient;
 
 import com.gshoogeveen.serverclient.client.Client;
-import com.gshoogeveen.serverclient.models.World;
+import com.gshoogeveen.serverclient.server.ConnectionManager;
 import com.gshoogeveen.serverclient.views.CustomFrame;
-import com.gshoogeveen.serverclient.views.WorldView;
+import com.gshoogeveen.serverclient.views.IntegerSender;
 
-
-public class ClientMain
+public class ClientMain implements Runnable
 {
+	private ConnectionManager manager = new ConnectionManager();
+	CustomFrame frame = new CustomFrame();
+
+	public ClientMain()
+	{
+		new Client(manager, "192.168.0.16", 1205).connect();
+
+		frame.add(new IntegerSender(manager));
+		frame.revalidate();
+		frame.setTitle("Client");
+	}
 
 	public static void main(String[] args)
 	{
-		World w = new World();
-		
-		CustomFrame frame = new CustomFrame();
-		frame.add(new WorldView(w));
-		
-		new Client().start();
+		new ClientMain();
 	}
 
+	@Override
+	public void run()
+	{
+		while (true)
+		{
+			manager.read();
+			frame.repaint();
+		}
+	}
 }

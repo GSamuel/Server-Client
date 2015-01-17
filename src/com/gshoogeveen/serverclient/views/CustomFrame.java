@@ -21,11 +21,11 @@ public class CustomFrame extends JFrame
 	private void init()
 	{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(800,600);
+		this.setSize(300,300);
 		this.getContentPane().setBackground(Color.WHITE);
 		
 		this.setLayout(new FlowLayout());
-		
+		this.setLocationByPlatform(true);
 		this.setVisible(true);
 		this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 	}

@@ -4,54 +4,40 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Client implements Runnable
+import com.gshoogeveen.serverclient.server.ConnectionHandler;
+import com.gshoogeveen.serverclient.server.ConnectionManager;
+
+public class Client
 {
-	private boolean started = false;
+	private ConnectionManager connectionManager;
+	private String adress;
+	private int port;
 
-	public void start()
+	public Client(ConnectionManager connectionManager,String adress, int port)
 	{
-		if (!started)
-			new Thread(this).start();
-		started = true;
+		this.connectionManager = connectionManager;
+		this.adress = adress;
+		this.port = port;
 	}
-
-	@Override
-	public void run()
+	
+	public void connect()
 	{
 		Socket clientSocket = null;
 		try
 		{
 			System.out.println("connection to server");
-			//clientSocket = new Socket("192.168.2.38", 1205);
-			clientSocket = new Socket("192.168.1.44", 1205);
+			clientSocket = new Socket(adress, port);
 			System.out.println("connected to server");
-			Thread.sleep(2000);
-			System.out.println("close connection");
-			clientSocket.close();
-			System.out.println("connection closed");
 
+			connectionManager.add(new ConnectionHandler(clientSocket));
+			
 		} catch (UnknownHostException e)
 		{
 			e.printStackTrace();
 		} catch (IOException e)
 		{
 			e.printStackTrace();
-		} catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		} finally
-		{
-
-			try
-			{
-				if (clientSocket != null)
-					clientSocket.close();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
 		}
-
 	}
 
 }
