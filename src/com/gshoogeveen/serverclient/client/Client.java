@@ -27,6 +27,7 @@ public class Client
 		{
 			System.out.println("connection to server");
 			clientSocket = new Socket(adress, port);
+			System.out.println(clientSocket.getInetAddress().getHostName());
 			System.out.println("connected to server");
 
 			connectionManager.add(new ConnectionHandler(clientSocket));

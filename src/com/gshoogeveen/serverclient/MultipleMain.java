@@ -7,8 +7,5 @@ public class MultipleMain
 		new Thread(new ServerMain()).start();
 		new Thread(new ClientMain()).start();
 		new Thread(new ClientMain()).start();
-		new Thread(new ClientMain()).start();
-		new Thread(new ClientMain()).start();
-		new Thread(new ClientMain()).start();
 	}
 }

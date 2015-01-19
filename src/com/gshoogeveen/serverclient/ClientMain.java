@@ -12,7 +12,7 @@ public class ClientMain implements Runnable
 
 	public ClientMain()
 	{
-		new Client(manager, "192.168.0.16", 1205).connect();
+		new Client(manager, "a60090.upc-a.chello.nl", 1205).connect();
 
 		frame.add(new IntegerSender(manager));
 		frame.revalidate();
